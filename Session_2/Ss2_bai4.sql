@@ -24,7 +24,6 @@ CREATE TABLE Enrollment (
         REFERENCES Student (student_id)
 );
 
-
 CREATE TABLE Teacher (
     teacher_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,

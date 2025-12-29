@@ -1,5 +1,7 @@
 drop database if exists Ss2_bai6;
+
 create database Ss2_bai6;
+
 use Ss2_bai6;
 
 CREATE TABLE Student (
@@ -17,13 +19,10 @@ CREATE TABLE Enrollment (
     student_id INT NOT NULL,
     subject_id INT NOT NULL,
     registration_date DATE NOT NULL,
-    PRIMARY KEY (student_id , subject_id),
-    FOREIGN KEY (subject_id)
-        REFERENCES Subject (subject_id),
-    FOREIGN KEY (student_id)
-        REFERENCES Student (student_id)
+    PRIMARY KEY (student_id, subject_id),
+    FOREIGN KEY (subject_id) REFERENCES Subject (subject_id),
+    FOREIGN KEY (student_id) REFERENCES Student (student_id)
 );
-
 
 CREATE TABLE Teacher (
     teacher_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -31,33 +30,60 @@ CREATE TABLE Teacher (
     email VARCHAR(100) NOT NULL UNIQUE
 );
 
-alter table Subject
-add teacher_id int not null;
+alter table
+    Subject
+add
+    teacher_id int not null;
 
-alter table Subject
-add constraint fk_subject_teacher
-foreign key (teacher_id) references Teacher(teacher_id);
+alter table
+    Subject
+add
+    constraint fk_subject_teacher foreign key (teacher_id) references Teacher(teacher_id);
 
 CREATE TABLE Score (
     student_id INT NOT NULL,
     subject_id INT NOT NULL,
-    process_score DECIMAL(4 , 2 ) CHECK (process_score >= 0
-        and process_score <= 10),
-    final_score DECIMAL(4 , 2 ) CHECK (final_score >= 0 AND final_score <= 10),
-    PRIMARY KEY (student_id , subject_id),
-    FOREIGN KEY (student_id)
-        REFERENCES Student (student_id),
-    FOREIGN KEY (subject_id)
-        REFERENCES Subject (subject_id)
+    process_score DECIMAL(4, 2) CHECK (
+        process_score >= 0
+        and process_score <= 10
+    ),
+    final_score DECIMAL(4, 2) CHECK (
+        final_score >= 0
+        AND final_score <= 10
+    ),
+    PRIMARY KEY (student_id, subject_id),
+    FOREIGN KEY (student_id) REFERENCES Student (student_id),
+    FOREIGN KEY (subject_id) REFERENCES Subject (subject_id)
 );
 
 CREATE TABLE Class (
     class_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
-    student_count INT NOT NULL CHECK (student_count >0)
+    student_count INT NOT NULL CHECK (student_count > 0)
 );
 
-alter table Student add class_id int not null;
-alter table Student 
-add constraint fk_student_class foreign key(class_id) references Class(class_id);
+alter table
+    Student
+add
+    class_id int not null;
 
+alter table
+    Student
+add
+    constraint fk_student_class foreign key(class_id) references Class(class_id);
+
+INSERT into Class (name, student_count) values
+('Class A', 30),
+('Class B', 25);
+
+INSERT into Student (fullname,class_id) values
+('Alice Johnson', 1),
+('Bob Smith', 1),
+('Charlie Brown', 2);
+
+SELECT
+    *
+from
+    Student;
+
+SELECT DATABASE();
