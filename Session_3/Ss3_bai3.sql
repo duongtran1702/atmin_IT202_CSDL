@@ -12,21 +12,26 @@ insert into
     Subject (subject_name, credits)
 values
     ('Math', 3),
-('ENG', 2),
-('PHY', 4),
-('CHEM', 3),
-('BIO', 2);
+    ('ENG', 2),
+    ('PHY', 4),
+    ('CHEM', 3),
+    ('BIO', 2);
 
-UPDATE Subject 
-SET 
+UPDATE
+    Subject
+SET
     credits = 1
 WHERE
     subject_id > 3;
-    
-UPDATE Subject 
-SET 
+
+UPDATE
+    Subject
+SET
     subject_name = 'Physical'
 WHERE
     subject_name = 'PHY';
 
-select * from Subject;
+select
+    *
+from
+    Subject;

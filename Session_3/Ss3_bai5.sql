@@ -76,12 +76,14 @@ set
 where
     student_id = 5
     and subject_id = 2;
-    
-select 
-	s.fullname,
+
+select
+    s.fullname,
     sub.subject_name,
     p.final_score
-from Score p
-join Student s on s.student_id=p.student_id
-join Subject sub on sub.subject_id = p.subject_id
-where p.final_score>=8.00;
+from
+    Score p
+    join Student s on s.student_id = p.student_id
+    join Subject sub on sub.subject_id = p.subject_id
+where
+    p.final_score >= 8.00;
