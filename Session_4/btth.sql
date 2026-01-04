@@ -1,3 +1,4 @@
+drop database if exists session04;
 create database session04;
 use session04;
 
@@ -27,7 +28,7 @@ create table enrollment(
 	student_id int not null,
     course_id int not null,
     enroll_date date default (current_date()),
-    unique(student_id, course_id),
+    primary key (student_id, course_id),
     foreign key (student_id) references student(student_id),
     foreign key (course_id) references course(course_id)
 );

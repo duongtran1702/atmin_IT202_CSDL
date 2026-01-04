@@ -11,9 +11,9 @@
             "port": 3306,
             "driver": "MySQL",
             "name": "atmin",
+            "database": "mysql",
             "username": "root",
-            "password": "Duong170226@",
-            "database": "mysql"
+            "password": "Duong170226@"
         }
     ]
 }
