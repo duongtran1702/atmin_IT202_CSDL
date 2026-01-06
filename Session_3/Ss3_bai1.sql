@@ -1,4 +1,4 @@
--- drop database if exists Session3_bai1;
+drop database if exists Session3_bai1;
 
 create database Session3_bai1;
 use Session3_bai1;
@@ -13,4 +13,11 @@ create table Student(
 insert into Student (fullname,dob,email) VALUES 
 ('alice','2006-02-17','alice@gmail.com'),
 ('bob','2006-02-17','bob@gmail.com') ,
-('alice','2006-02-17','alice@gmail.com') ;
+('mynato','2006-02-17','mynato@gmail.com') ;
+
+SELECT 
+    *
+FROM
+    Student;
+
+select student_id,fullname from Student;
