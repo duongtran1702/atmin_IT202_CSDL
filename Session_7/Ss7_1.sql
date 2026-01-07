@@ -1,4 +1,4 @@
-drop database if exists session_7;
+-- drop database if exists session_7;
 create database session_7;
 
 use session_7;
@@ -40,6 +40,7 @@ values
     (2, '2026-01-08', 4500000.50),
     (3, '2026-01-09', 5000000.00),
     (7, '2026-01-10', 3000000.00);
+
 
 select
     *
