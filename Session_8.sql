@@ -1,5 +1,7 @@
 drop database if exists Session_8_db;
+
 create database if not exists Session_8_db;
+
 use Session_8_db;
 
 create table customer(
@@ -338,4 +340,53 @@ where
             price
         from
             products
+    );
+
+select
+    customer_name
+from
+    customer
+where
+    customer_id in (
+        select
+            customer_id
+        from
+            orders
+        where
+            order_id in (
+                select
+                    order_id
+                from
+                    order_items
+                where
+                    product_id in (
+                        select
+                            product_id
+                        from
+                            products
+                        where
+                            category_id in (
+                                select
+                                    category_id
+                                from
+                                    products
+                                group by
+                                    category_id
+                                having
+                                    avg(price) = (
+                                        select
+                                            max(avg_price)
+                                        from
+                                            (
+                                                select
+                                                    avg(price) as avg_price
+                                                from
+                                                    products
+                                                group by
+                                                    category_id
+                                            ) as max_avg
+                                    )
+                            )
+                    )
+            )
     );
