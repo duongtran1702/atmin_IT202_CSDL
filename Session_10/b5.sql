@@ -12,11 +12,12 @@ where
 
 select
     u.user_id,
-    u.full_name,
+    u.username,
     p.post_id,
     p.content
 from
     users u
     join posts p on p.user_id = u.user_id
 where
-    u.hometown = 'Hà Nội';
+    u.hometown = 'Hà Nội'
+    order by username desc;

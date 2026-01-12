@@ -1,4 +1,5 @@
 use social_network_pro;
+
 EXPLAIN ANALYZE
 select * from users u 
 where u.hometown = 'Hà Nội';
