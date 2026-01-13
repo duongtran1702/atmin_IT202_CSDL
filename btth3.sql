@@ -1,56 +1,57 @@
-DROP DATABASE IF EXISTS MiniprojectSS12;
-CREATE DATABASE MiniprojectSS12;
-USE MiniprojectSS12;
+drop database if exists miniprojectss12;
+
+create database miniprojectss12;
+use miniprojectss12;
 -- tạo bảng dữ liệu
-CREATE TABLE Users(
-	user_id INT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+create table users(
+	user_id int primary key auto_increment,
+    username varchar(255) not null,
+    password varchar(255) not null,
+    email varchar(255) not null unique,
+    created_at datetime default current_timestamp
 );
 
-CREATE TABLE Posts(
-	post_id INT PRIMARY KEY AUTO_INCREMENT,
-    user_id INT,
-    FOREIGN KEY(user_id) REFERENCES Users(user_id),
-    content TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+create table posts(
+	post_id int primary key auto_increment,
+    user_id int,
+    foreign key(user_id) references users(user_id),
+    content text not null,
+    created_at datetime default current_timestamp
 );
 
-CREATE TABLE Comments (
-    comment_id INT PRIMARY KEY AUTO_INCREMENT,
-    post_id INT,
-    user_id INT,
-    FOREIGN KEY (user_id)
-        REFERENCES Users (user_id),
-    FOREIGN KEY (post_id)
-        REFERENCES Posts (post_id),
-    content TEXT NOT NULL,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+create table comments (
+    comment_id int primary key auto_increment,
+    post_id int,
+    user_id int,
+    foreign key (user_id)
+        references users (user_id),
+    foreign key (post_id)
+        references posts (post_id),
+    content text not null,
+    created_at datetime default current_timestamp
 );
 
-CREATE TABLE Friends (
-    friend_id INT,
-    user_id INT,
-    FOREIGN KEY (user_id)
-        REFERENCES Users (user_id),
-    FOREIGN KEY (friend_id)
-        REFERENCES Users (user_id),
-    status VARCHAR(20) CHECK (status IN ('pending' , 'accepted'))
+create table friends (
+    friend_id int,
+    user_id int,
+    foreign key (user_id)
+        references users (user_id),
+    foreign key (friend_id)
+        references users (user_id),
+    status varchar(20) check (status in ('pending' , 'accepted'))
 );
 
-create table Likes(
-	user_id INT,
-    post_id INT,
-    FOREIGN KEY (user_id)
-        REFERENCES Users (user_id),
-    FOREIGN KEY (post_id)
-        REFERENCES Posts (post_id)
+create table likes(
+	user_id int,
+    post_id int,
+    foreign key (user_id)
+        references users (user_id),
+    foreign key (post_id)
+        references posts (post_id)
 );
 
--- Bài 1. Quản lý người dùng
-INSERT INTO Users (username, password, email) VALUES
+-- bài 1. quản lý người dùng
+insert into users (username, password, email) values
 ('anhtuan', '123', 'anhtuan@gmail.com'),
 ('minhan', '123', 'minhan@gmail.com'),
 ('thanhdat', '123', 'thanhdat@gmail.com'),
@@ -72,58 +73,58 @@ INSERT INTO Users (username, password, email) VALUES
 ('huyhoang', '123', 'huyhoang@gmail.com'),
 ('quynhanh', '123', 'quynhanh@gmail.com');
 
-SELECT user_id,username,password,email,created_at
-FROM Users;
+select user_id,username,password,email,created_at
+from users;
 
 
-INSERT INTO Posts (user_id, content) VALUES
-(1, 'Hôm nay học database rất thú vị'),
-(2, 'MySQL giúp quản lý dữ liệu hiệu quả'),
-(3, 'Mình đang học stored procedure'),
-(4, 'Lập trình backend thật sự cuốn'),
-(5, 'Cuối tuần học SQL cùng bạn bè'),
-(6, 'Index giúp truy vấn nhanh hơn'),
-(7, 'View giúp bảo mật dữ liệu'),
-(8, 'Hôm nay trời mưa nhẹ'),
-(9, 'Tối ưu database rất quan trọng'),
-(10, 'Học database để làm backend'),
-(11, 'Procedure giúp tái sử dụng code'),
-(12, 'Mạng xã hội mini bằng SQL'),
-(13, 'Thích nhất là phần join table'),
-(14, 'Thực hành SQL mỗi ngày'),
-(15, 'Cơ sở dữ liệu quan hệ'),
-(16, 'Foreign key rất quan trọng'),
-(17, 'Composite index tăng hiệu suất'),
-(18, 'Database design quyết định hiệu năng'),
-(19, 'SQL không khó nếu chăm học'),
-(20, 'Backend developer cần giỏi database');
+insert into posts (user_id, content) values
+(1, 'hôm nay học database rất thú vị'),
+(2, 'mysql giúp quản lý dữ liệu hiệu quả'),
+(3, 'mình đang học stored procedure'),
+(4, 'lập trình backend thật sự cuốn'),
+(5, 'cuối tuần học sql cùng bạn bè'),
+(6, 'index giúp truy vấn nhanh hơn'),
+(7, 'view giúp bảo mật dữ liệu'),
+(8, 'hôm nay trời mưa nhẹ'),
+(9, 'tối ưu database rất quan trọng'),
+(10, 'học database để làm backend'),
+(11, 'procedure giúp tái sử dụng code'),
+(12, 'mạng xã hội mini bằng sql'),
+(13, 'thích nhất là phần join table'),
+(14, 'thực hành sql mỗi ngày'),
+(15, 'cơ sở dữ liệu quan hệ'),
+(16, 'foreign key rất quan trọng'),
+(17, 'composite index tăng hiệu suất'),
+(18, 'database design quyết định hiệu năng'),
+(19, 'sql không khó nếu chăm học'),
+(20, 'backend developer cần giỏi database');
 
 
-INSERT INTO Comments (post_id, user_id, content) VALUES
-(1,2,'Chuẩn luôn'),
-(1,3,'Mình cũng thấy vậy'),
-(2,4,'MySQL rất mạnh'),
-(3,5,'Procedure hơi khó'),
-(4,6,'Backend rất thú vị'),
-(5,7,'Cuối tuần học là hợp lý'),
-(6,8,'Index quan trọng thật'),
-(7,9,'View rất hay'),
-(8,10,'Thời tiết dễ ngủ'),
-(9,11,'Tối ưu là bắt buộc'),
-(10,12,'Backend cần SQL'),
-(11,13,'Procedure dùng nhiều'),
-(12,14,'Mini project hay'),
-(13,15,'Join là nền tảng'),
-(14,16,'Ngày nào cũng nên học'),
-(15,17,'CSDL rất quan trọng'),
-(16,18,'FK giúp tránh lỗi'),
-(17,19,'Index tăng tốc'),
-(18,20,'Thiết kế chuẩn rất quan trọng'),
-(19,1,'SQL dễ mà'),
-(20,2,'Backend không thể thiếu DB');
+insert into comments (post_id, user_id, content) values
+(1,2,'chuẩn luôn'),
+(1,3,'mình cũng thấy vậy'),
+(2,4,'mysql rất mạnh'),
+(3,5,'procedure hơi khó'),
+(4,6,'backend rất thú vị'),
+(5,7,'cuối tuần học là hợp lý'),
+(6,8,'index quan trọng thật'),
+(7,9,'view rất hay'),
+(8,10,'thời tiết dễ ngủ'),
+(9,11,'tối ưu là bắt buộc'),
+(10,12,'backend cần sql'),
+(11,13,'procedure dùng nhiều'),
+(12,14,'mini project hay'),
+(13,15,'join là nền tảng'),
+(14,16,'ngày nào cũng nên học'),
+(15,17,'csdl rất quan trọng'),
+(16,18,'fk giúp tránh lỗi'),
+(17,19,'index tăng tốc'),
+(18,20,'thiết kế chuẩn rất quan trọng'),
+(19,1,'sql dễ mà'),
+(20,2,'backend không thể thiếu db');
 
 
-INSERT INTO Friends (user_id, friend_id, status) VALUES
+insert into friends (user_id, friend_id, status) values
 (1,2,'accepted'),
 (1,3,'accepted'),
 (1,4,'pending'),
@@ -146,7 +147,7 @@ INSERT INTO Friends (user_id, friend_id, status) VALUES
 (16,1,'pending');
 
 
-INSERT INTO Likes (user_id, post_id) VALUES
+insert into likes (user_id, post_id) values
 (1,1),
 (2,1),
 (3,1),
@@ -168,240 +169,240 @@ INSERT INTO Likes (user_id, post_id) VALUES
 (19,10),
 (20,10);
 
--- Bài 2. Hiển thị thông tin công khai bằng VIEW
-CREATE VIEW vw_public_users AS
-SELECT user_id,username,created_at
-FROM Users;
+-- bài 2. hiển thị thông tin công khai bằng view
+create view vw_public_users as
+select user_id,username,created_at
+from users;
 
-SELECT *
-FROM vw_public_users;
+select *
+from vw_public_users;
 
-SELECT user_id,username,created_at
-FROM Users;
+select user_id,username,created_at
+from users;
 
--- Bài 3. Tối ưu tìm kiếm người dùng bằng INDEX
-CREATE INDEX idx_username ON Users(username);
-DROP INDEX idx_username ON Users;
+-- bài 3. tối ưu tìm kiếm người dùng bằng index
+create index idx_username on users(username);
+drop index idx_username on users;
 
-SELECT *
-FROM Users
-WHERE username = 'anhtuan';
+select *
+from users
+where username = 'anhtuan';
 
--- Bài 4. Quản lý bài viết bằng Stored Procedure
-DELIMITER $$
+-- bài 4. quản lý bài viết bằng stored procedure
+delimiter $$
 
-CREATE PROCEDURE sp_create_post(
-    IN p_user_id INT,
-    IN p_content TEXT
+create procedure sp_create_post(
+    in p_user_id int,
+    in p_content text
 )
-BEGIN
-    IF EXISTS (SELECT 1 FROM Users WHERE user_id = p_user_id) THEN
-        INSERT INTO Posts(user_id, content)
-        VALUES (p_user_id, p_content);
-    ELSE
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'User không tồn tại';
-    END IF;
-END$$
+begin
+    if exists (select 1 from users where user_id = p_user_id) then
+        insert into posts(user_id, content)
+        values (p_user_id, p_content);
+    else
+        signal sqlstate '45000'
+        set message_text = 'user không tồn tại';
+    end if;
+end$$
 
-CALL sp_create_post(1, 'Bài viết mới từ stored procedure');
+call sp_create_post(1, 'bài viết mới từ stored procedure');
 
--- Bài 5. Hiển thị News Feed bằng VIEW
-CREATE VIEW vw_recent_posts AS
-SELECT p.post_id, u.username, p.content, p.created_at
-FROM Posts p
-JOIN Users u ON p.user_id = u.user_id
-WHERE p.created_at >= NOW() - INTERVAL 7 DAY;
+-- bài 5. hiển thị news feed bằng view
+create view vw_recent_posts as
+select p.post_id, u.username, p.content, p.created_at
+from posts p
+join users u on p.user_id = u.user_id
+where p.created_at >= now() - interval 7 day;
 
-SELECT *
-FROM vw_recent_posts
-ORDER BY created_at DESC;
-
-
-
--- Bài 6. Tối ưu truy vấn bài viết
-CREATE INDEX idx_posts_user_id
-ON Posts(user_id);
-
-CREATE INDEX idx_posts_user_created
-ON Posts(user_id, created_at);
-
-SELECT *
-FROM Posts
-WHERE user_id = 1
-ORDER BY created_at DESC;
-
--- Vai trò của Composite Index.
-	-- Lọc nhanh theo user
-	-- Sắp xếp nhanh theo thời gian
-	-- Tránh sort tốn tài nguyên
+select *
+from vw_recent_posts
+order by created_at desc;
 
 
--- Bài 7. Thống kê hoạt động bằng Stored Procedure
-DELIMITER $$
 
-CREATE PROCEDURE sp_count_posts(
-    IN p_user_id INT,
-    OUT p_total INT
+-- bài 6. tối ưu truy vấn bài viết
+create index idx_posts_user_id
+on posts(user_id);
+
+create index idx_posts_user_created
+on posts(user_id, created_at);
+
+select *
+from posts
+where user_id = 1
+order by created_at desc;
+
+-- vai trò của composite index.
+	-- lọc nhanh theo user
+	-- sắp xếp nhanh theo thời gian
+	-- tránh sort tốn tài nguyên
+
+
+-- bài 7. thống kê hoạt động bằng stored procedure
+delimiter $$
+
+create procedure sp_count_posts(
+    in p_user_id int,
+    out p_total int
 )
-BEGIN
-    SELECT COUNT(*) INTO p_total
-    FROM Posts
-    WHERE user_id = p_user_id;
-END$$
+begin
+    select count(*) into p_total
+    from posts
+    where user_id = p_user_id;
+end$$
 
-CALL sp_count_posts(1, @total_posts);
-SELECT @total_posts AS total_posts;
-
-
--- Bài 8. Kiểm soát dữ liệu bằng View WITH CHECK OPTION
-CREATE VIEW vw_active_users AS
-SELECT u.user_id, u.username, u.created_at
-FROM Users u
-JOIN Posts p ON u.user_id = p.user_id
-WITH CHECK OPTION;
+call sp_count_posts(1, @total_posts);
+select @total_posts as total_posts;
 
 
--- Bài 9. Quản lý kết bạn bằng Stored Procedure
-DELIMITER $$
+-- bài 8. kiểm soát dữ liệu bằng view with check option
+create view vw_active_users as
+select u.user_id, u.username, u.created_at
+from users u
+join posts p on u.user_id = p.user_id
+with check option;
 
-CREATE PROCEDURE sp_add_friend(
-    IN p_user_id INT,
-    IN p_friend_id INT
+
+-- bài 9. quản lý kết bạn bằng stored procedure
+delimiter $$
+
+create procedure sp_add_friend(
+    in p_user_id int,
+    in p_friend_id int
 )
-BEGIN
-    IF p_user_id = p_friend_id THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Không thể kết bạn với chính mình';
-    ELSE
-        INSERT INTO Friends(user_id, friend_id, status)
-        VALUES (p_user_id, p_friend_id, 'pending');
-    END IF;
-END$$
+begin
+    if p_user_id = p_friend_id then
+        signal sqlstate '45000'
+        set message_text = 'không thể kết bạn với chính mình';
+    else
+        insert into friends(user_id, friend_id, status)
+        values (p_user_id, p_friend_id, 'pending');
+    end if;
+end$$
 
-CALL sp_add_friend(1,5);
+call sp_add_friend(1,5);
 
--- Bài 10. Gợi ý bạn bè bằng Procedure nâng cao
-DELIMITER $$
+delimiter $$
+-- bài 10. gợi ý bạn bè bằng procedure nâng cao
 
-CREATE PROCEDURE sp_suggest_friends(
-    IN p_user_id INT,
-    INOUT p_limit INT
+create procedure sp_suggest_friends(
+    in p_user_id int,
+    inout p_limit int
 )
-BEGIN
-    DECLARE counter INT DEFAULT 0;
-    SELECT u.user_id, u.username
-        FROM Users u
-        WHERE u.user_id != p_user_id
-          AND u.user_id NOT IN (
-              SELECT friend_id FROM Friends WHERE user_id = p_user_id
+begin
+    declare counter int default 0;
+    select u.user_id, u.username
+        from users u
+        where u.user_id != p_user_id
+          and u.user_id not in (
+              select friend_id from friends where user_id = p_user_id
           )
-        LIMIT p_limit;
-END$$
-SET @limit = 5;
-CALL sp_suggest_friends(1,@limit)
+        limit p_limit;
+end$$
+set @limit = 5;
+call sp_suggest_friends(1,@limit)
 
--- Bài 11. Thống kê tương tác nâng cao
-CREATE INDEX idx_likes_post_id
-ON Likes(post_id);
+-- bài 11. thống kê tương tác nâng cao
+create index idx_likes_post_id
+on likes(post_id);
 
-CREATE VIEW vw_top_posts AS
-SELECT p.post_id, p.content, COUNT(l.post_id) AS total_likes
-FROM Posts p
-JOIN Likes l ON p.post_id = l.post_id
-GROUP BY p.post_id
-ORDER BY total_likes DESC
-LIMIT 5;
+create view vw_top_posts as
+select p.post_id, p.content, count(l.post_id) as total_likes
+from posts p
+join likes l on p.post_id = l.post_id
+group by p.post_id
+order by total_likes desc
+limit 5;
 
-SELECT * FROM vw_top_posts;
+select * from vw_top_posts;
 
 
--- BÀI 12. QUẢN LÝ BÌNH LUẬN
-DELIMITER $$
+-- bài 12. quản lý bình luận
+delimiter $$
 
-CREATE PROCEDURE sp_add_comment(
-    IN p_user_id INT,
-    IN p_post_id INT,
-    IN p_content TEXT
+create procedure sp_add_comment(
+    in p_user_id int,
+    in p_post_id int,
+    in p_content text
 )
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM Users WHERE user_id = p_user_id) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'User không tồn tại';
-    ELSEIF NOT EXISTS (SELECT 1 FROM Posts WHERE post_id = p_post_id) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Post không tồn tại';
-    ELSE
-        INSERT INTO Comments(user_id, post_id, content)
-        VALUES (p_user_id, p_post_id, p_content);
-    END IF;
-END$$
+begin
+    if not exists (select 1 from users where user_id = p_user_id) then
+        signal sqlstate '45000'
+        set message_text = 'user không tồn tại';
+    elseif not exists (select 1 from posts where post_id = p_post_id) then
+        signal sqlstate '45000'
+        set message_text = 'post không tồn tại';
+    else
+        insert into comments(user_id, post_id, content)
+        values (p_user_id, p_post_id, p_content);
+    end if;
+end$$
 
-CALL sp_add_comment(1,1,'hihi');
+call sp_add_comment(1,1,'hihi');
 
-CREATE VIEW vw_post_comments AS
-SELECT c.content, u.username, c.created_at
-FROM Comments c
-JOIN Users u ON c.user_id = u.user_id;
+create view vw_post_comments as
+select c.content, u.username, c.created_at
+from comments c
+join users u on c.user_id = u.user_id;
 
-SELECT *
-FROM vw_post_comments;
+select *
+from vw_post_comments;
 
 
--- BÀI 13. QUẢN LÝ LƯỢT THÍCH
-DELIMITER $$
+-- bài 13. quản lý lượt thích
+delimiter $$
 
-CREATE PROCEDURE sp_like_post(
-    IN p_user_id INT,
-    IN p_post_id INT
+create procedure sp_like_post(
+    in p_user_id int,
+    in p_post_id int
 )
-BEGIN
-    IF EXISTS (
-        SELECT 1 FROM Likes
-        WHERE user_id = p_user_id AND post_id = p_post_id
-    ) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Đã thích bài viết này';
-    ELSE
-        INSERT INTO Likes(user_id, post_id)
-        VALUES (p_user_id, p_post_id);
-    END IF;
-END$$
+begin
+    if exists (
+        select 1 from likes
+        where user_id = p_user_id and post_id = p_post_id
+    ) then
+        signal sqlstate '45000'
+        set message_text = 'đã thích bài viết này';
+    else
+        insert into likes(user_id, post_id)
+        values (p_user_id, p_post_id);
+    end if;
+end$$
 
-CALL sp_like_post(1,2);
+call sp_like_post(1,2);
 
-CREATE VIEW vw_post_likes AS
-SELECT post_id, COUNT(*) AS total_likes
-FROM Likes
-GROUP BY post_id;
+create view vw_post_likes as
+select post_id, count(*) as total_likes
+from likes
+group by post_id;
 
-SELECT *
-FROM vw_post_likes;
+select *
+from vw_post_likes;
 
 
--- Bài 14. TÌM KIẾM NGƯỜI DÙNG & BÀI VIẾT
-DELIMITER $$
+-- bài 14. tìm kiếm người dùng & bài viết
+delimiter $$
 
-CREATE PROCEDURE sp_search_social(
-    IN p_option INT,
-    IN p_keyword VARCHAR(100)
+create procedure sp_search_social(
+    in p_option int,
+    in p_keyword varchar(100)
 )
-BEGIN
-    IF p_option = 1 THEN
-        SELECT user_id, username
-        FROM Users
-        WHERE username LIKE CONCAT('%', p_keyword, '%');
-    ELSEIF p_option = 2 THEN
-        SELECT post_id, content
-        FROM Posts
-        WHERE content LIKE CONCAT('%', p_keyword, '%');
-    ELSE
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Option không hợp lệ';
-    END IF;
-END$$
+begin
+    if p_option = 1 then
+        select user_id, username
+        from users
+        where username like concat('%', p_keyword, '%');
+    elseif p_option = 2 then
+        select post_id, content
+        from posts
+        where content like concat('%', p_keyword, '%');
+    else
+        signal sqlstate '45000'
+        set message_text = 'option không hợp lệ';
+    end if;
+end$$
 
-CALL sp_search_social(1, 'anhtuan');
-CALL sp_search_social(2, 'MySQL');
+call sp_search_social(1, 'anhtuan');
+call sp_search_social(2, 'mysql');
 
 
