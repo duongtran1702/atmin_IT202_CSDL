@@ -5,9 +5,9 @@ use miniprojectss12;
 -- tạo bảng dữ liệu
 create table users(
 	user_id int primary key auto_increment,
-    username varchar(255) not null,
+    username varchar(50) not null unique,
     password varchar(255) not null,
-    email varchar(255) not null unique,
+    email varchar(100) not null unique,
     created_at datetime default current_timestamp
 );
 
@@ -291,6 +291,18 @@ create procedure sp_suggest_friends(
 )
 begin
     declare counter int default 0;
+    declare max_limit int default 10;
+
+    if p_limit is null or p_limit <= 0 then
+        set p_limit = 5;
+    elseif p_limit > max_limit then
+        set p_limit = max_limit;
+    end if;
+
+    while counter < p_limit do
+        set counter = counter + 1;
+    end while;
+
     select u.user_id, u.username
         from users u
         where u.user_id != p_user_id
@@ -300,7 +312,7 @@ begin
         limit p_limit;
 end$$
 set @limit = 5;
-call sp_suggest_friends(1,@limit)
+call sp_suggest_friends(1,@limit);
 
 -- bài 11. thống kê tương tác nâng cao
 create index idx_likes_post_id
@@ -326,10 +338,16 @@ create procedure sp_add_comment(
     in p_content text
 )
 begin
-    if not exists (select 1 from users where user_id = p_user_id) then
+    declare v_user_exists int default 0;
+    declare v_post_exists int default 0;
+
+    select count(*) into v_user_exists from users where user_id = p_user_id;
+    select count(*) into v_post_exists from posts where post_id = p_post_id;
+
+    if v_user_exists = 0 then
         signal sqlstate '45000'
         set message_text = 'user không tồn tại';
-    elseif not exists (select 1 from posts where post_id = p_post_id) then
+    elseif v_post_exists = 0 then
         signal sqlstate '45000'
         set message_text = 'post không tồn tại';
     else
@@ -402,7 +420,7 @@ begin
     end if;
 end$$
 
-call sp_search_social(1, 'anhtuan');
-call sp_search_social(2, 'mysql');
+call sp_search_social(1, 'an');
+call sp_search_social(2, 'database');
 
 
